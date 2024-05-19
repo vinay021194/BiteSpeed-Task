@@ -1,0 +1,43 @@
+.text-node {
+  width: 200px; /* Set a fixed width for the node */
+  /* padding: 10px; */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  position: relative;
+  word-wrap: break-word; /* Ensures text wraps within the container */
+}
+
+.node-header {
+  /* display: flex;
+  justify-content: space-between; */
+  background-color: #78ffc4;
+  /* padding: 1px; */
+  border-radius: 5px 5px 0 0;
+  align-items: center;
+}
+
+.node-header h5 {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 2px;
+  font-size: 8px;
+  align-items: center;
+}
+
+.node-divider {
+  margin: 5px 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+.node-content {
+  max-height: 100px; /* Set a max height for the content area */
+  overflow-y: auto; /* Adds a scrollbar if content overflows */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  padding: 5px;
+  word-wrap: break-word;
+  font-size: xx-small;
+  /* Ensures text wraps within the container */
+}

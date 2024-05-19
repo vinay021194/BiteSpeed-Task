@@ -1,0 +1,21 @@
+.node-panel {
+  width: 200px;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-right: 1px solid #dee2e6;
+  overflow-y: auto;
+}
+
+.node-panel div {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  cursor: pointer;
+  text-align: center;
+}
+
+.node-panel div:hover {
+  background-color: #e9ecef;
+}

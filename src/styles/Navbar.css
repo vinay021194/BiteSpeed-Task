@@ -1,0 +1,35 @@
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  position: relative;
+}
+
+.save-status-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+}
+
+.save-status {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.save-status.error {
+  background-color: rgba(255, 0, 0, 0.8); /* Red with 80% opacity */
+  color: white;
+}
+
+.save-status.success {
+  background-color: rgba(0, 128, 0, 0.8); /* Green with 80% opacity */
+  color: white;
+}
+
+.save-button {
+  margin-left: auto;
+}
