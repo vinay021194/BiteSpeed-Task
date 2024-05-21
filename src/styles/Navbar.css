@@ -31,5 +31,19 @@
 }
 
 .save-button {
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: white;
+  color: rgb(26, 74, 233);
+  border: 1px solid blue;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 120px;
+}
+.save-button:hover {
+  color: white;
+  background-color: rgb(26, 74, 233);
 }

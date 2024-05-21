@@ -1,53 +1,54 @@
-.dndflow {
-  display: flex;
+/* src/App.css */
+.app {
   overflow: hidden;
-}
-
-.reactflow-wrapper {
+  display: flex;
   height: 100vh;
-  width: 100%;
 }
 
-aside {
-  width: 100%;
-  height: 100%;
-  padding: 30px;
+.sidebar {
+  width: 295px;
   /* background: #f4f4f4; */
-  border-left: 3px solid #ddd;
-  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  right: 0;
+  border-left: 1px solid #ddd;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.draggable-item {
+  width: 150px;
+  padding: 14px;
+  font-size: larger;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid rgb(23, 107, 233);
+  cursor: grab;
+  display: grid;
+  align-items: center;
+  color: rgb(23, 107, 233);
+  justify-content: center;
+  justify-items: center;
+}
+
+.flow-canvas {
+  flex: 1;
+  /* background: #eee; */
+  position: relative;
+  margin-right: 312px; /* Add margin to make space for the sidebar */
 }
 
 .settings-panel {
-  width: 20%;
   padding: 10px;
-  background: #f4f4f4;
-  border-left: 1px solid #ddd;
+  background: #fff;
+  border: 1px solid #ddd;
 }
 
-.save-button {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: white;
-  color: rgb(26, 74, 233);
-  border: 1px solid blue;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-right: 120px;
-}
-.save-button:hover {
-  color: white;
-  background-color: rgb(26, 74, 233);
-}
-.fixed-divider {
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin-top: 20px;
-}
-.side-panel {
-  width: 400px; /* Adjust as necessary */
-  border-left: 1px solid #ddd;
-  overflow-y: auto;
+.settings-panel textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+  height: 100px;
 }

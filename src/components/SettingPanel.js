@@ -1,22 +1,21 @@
+// src/components/SettingsPanel.js
 import React from "react";
 import "../styles/SettingPanel.css"; // Import the CSS file
 
-const SettingsPanel = ({ node, updateNode }) => {
-  const handleChange = (e) => {
-    updateNode(node.id, { label: e.target.value });
+const SettingsPanel = ({ selectedNode, onTextChange }) => {
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    onTextChange(newValue);
   };
-
-  if (!node || !node.data) {
-    return <div className="no-node-selected">No node selected</div>;
-  }
 
   return (
     <>
+      {/* <hr /> */}
       <h4>Text</h4>
       <textarea
         label="text"
         type="text"
-        value={node.data.label}
+        value={selectedNode ? selectedNode.data.label : ""}
         onChange={handleChange}
         className="message-box-input"
         placeholder="Text Area"

@@ -1,101 +1,73 @@
-import { useState, useCallback } from "react";
-import {
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-} from "react-flow-renderer";
+import { useCallback, useState } from "react";
+import { addEdge } from "react-flow-renderer";
 
-// Custom hook to manage the logic for a React Flow diagram
-const useFlowLogic = (initialNodes, initialEdges, setSaveStatus) => {
-  // State for nodes, edges, selected node, and the React Flow instance
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+// Custom hook to manage flow logic
+const useFlowLogics = (setSaveStatus) => {
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
   const [selectedNode, setSelectedNode] = useState(null);
-  const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
-  // Handler for node changes
-  const onNodesChange = useCallback((changes) => {
-    setNodes((nds) => applyNodeChanges(changes, nds));
-  }, []);
+  // Callback to handle connecting nodes
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    []
+  );
 
-  // Handler for edge changes
-  const onEdgesChange = useCallback((changes) => {
-    setEdges((eds) => applyEdgeChanges(changes, eds));
-  }, []);
+  // Callback to handle changes to the text of the selected node
+  const handleTextChange = useCallback(
+    (newText) => {
+      // Update the label of the selected node in the nodes state
+      setNodes((nds) =>
+        nds.map((node) =>
+          node.id === selectedNode.id
+            ? { ...node, data: { ...node.data, label: newText } }
+            : node
+        )
+      );
 
-  // Handler for connecting nodes
-  const onConnect = useCallback((params) => {
-    setEdges((eds) => addEdge(params, eds));
-  }, []);
+      // Update the selectedNode state with the new label
+      setSelectedNode((prev) => ({
+        ...prev,
+        data: { ...prev.data, label: newText },
+      }));
+    },
+    [selectedNode, setNodes, setSelectedNode]
+  );
 
-  // Handler when the React Flow instance is loaded
-  const onLoad = useCallback((rfi) => {
-    setReactFlowInstance(rfi);
-    rfi.fitView(); // Fit the view to the nodes
-  }, []);
-
-  // Handler for node click event
-  const onNodeClick = (event, node) => {
-    setSelectedNode(node);
-  };
-
-  // Function to add a new node to the diagram
-  const addNode = () => {
-    const id = `node_${nodes.length + 1}`;
-    const newNode = {
-      id,
-      type: "textNode",
-      position: { x: Math.random() * 250, y: Math.random() * 250 },
-      data: { label: `Node ${nodes.length + 1}` },
-    };
-    setNodes((nds) => [...nds, newNode]);
-  };
-
-  // Function to update a node's data
-  const updateNode = (id, newData) => {
-    setNodes((nds) =>
-      nds.map((node) =>
-        node.id === id ? { ...node, data: { ...node.data, ...newData } } : node
-      )
-    );
-    // Keep the selected node updated after the update
-    setSelectedNode((node) =>
-      node.id === id ? { ...node, data: { ...node.data, ...newData } } : node
-    );
-  };
-
-  // Function to save the current flow
-  const onSave = () => {
+  // Callback to handle saving the flow
+  const onSave = useCallback(() => {
+    // Find nodes that do not have any incoming edges
     const emptyTargetHandleNodes = nodes.filter(
       (node) => !edges.some((edge) => edge.target === node.id)
     );
+
+    // Check if there are more than one node without incoming edges
     if (nodes.length > 1 && emptyTargetHandleNodes.length > 1) {
+      // If so, set an error status
       setSaveStatus({
         message: "Error: More than one node with empty target handles!",
         type: "error",
       });
     } else {
+      // Otherwise, set a success status and log the nodes and edges
       setSaveStatus({ message: "Flow saved successfully!", type: "success" });
       console.log("Flow Nodes:", nodes);
       console.log("Flow Edges:", edges);
     }
-  };
+  }, [nodes, edges, setSaveStatus]);
 
-  // Return the state and handlers for use in the component
+  // Return the state and callbacks to be used by components
   return {
     nodes,
+    setNodes,
     edges,
+    setEdges,
     selectedNode,
-    reactFlowInstance,
-    onNodesChange,
-    onEdgesChange,
+    setSelectedNode,
     onConnect,
-    onLoad,
-    onNodeClick,
-    addNode,
-    updateNode,
+    handleTextChange,
     onSave,
   };
 };
 
-export default useFlowLogic;
+export default useFlowLogics;

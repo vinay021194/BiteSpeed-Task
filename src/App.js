@@ -1,78 +1,73 @@
+// src/App.js
 import React, { useState, useEffect } from "react";
-import { ReactFlowProvider } from "react-flow-renderer";
-import useFlowLogic from "./hooks/useFlowLogic";
-import Sidebar from "./components/Sidebar";
-import FlowCanvas from "./components/FlowCanvas";
-import Navbar from "./components/Navbar";
-import TextNode from "./components/TextNode";
-import "./App.css";
-
-// Initial nodes and edges arrays
-const initialNodes = [];
-const initialEdges = [];
-
-// Custom node types
-const nodeTypes = {
-  textNode: TextNode,
-};
+import { DndProvider } from "react-dnd"; // React DnD provider for drag-and-drop functionality
+import { HTML5Backend } from "react-dnd-html5-backend"; // Backend for HTML5 drag-and-drop
+import { ReactFlowProvider } from "react-flow-renderer"; // Provider for React Flow
+import Sidebar from "./components/Sidebar"; // Sidebar component
+import FlowCanvas from "./components/FlowCanvas"; // FlowCanvas component
+import useFlowLogics from "./hooks/useFlowLogic"; // Custom hook for managing flow logic
+import "./App.css"; // Application styles
+import Navbar from "./components/Navbar"; // Navbar component
 
 const App = () => {
-  // State to handle save status messages
+  // State to manage the save status message and type
   const [saveStatus, setSaveStatus] = useState({ message: "", type: "" });
 
-  // Use custom hook for flow logic
+  // Destructure the values returned from the useFlowLogics hook
   const {
     nodes,
+    setNodes,
     edges,
+    setEdges,
     selectedNode,
-    onNodesChange,
-    onEdgesChange,
+    setSelectedNode,
     onConnect,
-    onLoad,
-    onNodeClick,
-    addNode,
-    updateNode,
+    handleTextChange,
     onSave,
-  } = useFlowLogic(initialNodes, initialEdges, setSaveStatus);
+  } = useFlowLogics(setSaveStatus);
 
-  // Effect to clear save status messages after 5 seconds
+  // Effect to handle the save status message display timeout
   useEffect(() => {
     if (saveStatus.message) {
       const timer = setTimeout(() => {
         setSaveStatus({ message: "", type: "" });
-      }, 5000); // 5 seconds
+      }, 5000); // Clear the message after 5 seconds
 
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer); // Clean up the timer on component unmount
     }
   }, [saveStatus]);
 
   return (
     <>
-      {/* Navbar component with save functionality and status */}
+      {/* Navbar component with onSave and saveStatus props */}
       <Navbar onSave={onSave} saveStatus={saveStatus} />
-      <div className="dndflow">
-        <ReactFlowProvider>
-          {/* FlowCanvas component for rendering the flow diagram */}
-          <FlowCanvas
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onLoad={onLoad}
-            onNodeClick={onNodeClick}
-            nodeTypes={nodeTypes}
-          />
-          <div className="side-panel">
-            {/* Sidebar component for node addition and settings */}
-            <Sidebar
-              addNode={addNode}
+
+      {/* DndProvider for drag-and-drop context */}
+      <DndProvider backend={HTML5Backend}>
+        <div className="app">
+          {/* ReactFlowProvider for React Flow context */}
+          <ReactFlowProvider>
+            {/* FlowCanvas component with necessary props */}
+            <FlowCanvas
+              nodes={nodes}
+              setNodes={setNodes}
+              edges={edges}
+              setEdges={setEdges}
               selectedNode={selectedNode}
-              updateNode={updateNode}
+              setSelectedNode={setSelectedNode}
+              onConnect={onConnect}
             />
-          </div>
-        </ReactFlowProvider>
-      </div>
+          </ReactFlowProvider>
+
+          {/* Sidebar component with necessary props */}
+          <Sidebar
+            showSettings={!!selectedNode} // Show settings if a node is selected
+            selectedNode={selectedNode}
+            onTextChange={handleTextChange}
+            saveStatus={saveStatus}
+          />
+        </div>
+      </DndProvider>
     </>
   );
 };

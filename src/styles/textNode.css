@@ -7,6 +7,10 @@
   position: relative;
   word-wrap: break-word; /* Ensures text wraps within the container */
 }
+.text-node.active {
+  border: 1px solid #007bff;
+  background: #e3f2fd;
+}
 
 .node-header {
   /* display: flex;
@@ -22,7 +26,7 @@
   justify-content: space-between;
   margin: 0;
   padding: 2px;
-  font-size: 8px;
+  font-size: 10px;
   align-items: center;
 }
 
@@ -38,6 +42,6 @@
   overflow-x: hidden; /* Prevents horizontal scrolling */
   padding: 5px;
   word-wrap: break-word;
-  font-size: xx-small;
+  font-size: 10px;
   /* Ensures text wraps within the container */
 }

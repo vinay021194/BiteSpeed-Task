@@ -3,9 +3,9 @@ import { Handle } from "react-flow-renderer";
 import "../styles/textNode.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-const TextNode = ({ id, data }) => {
+const TextNode = ({ id, data, selected }) => {
   return (
-    <div className="text-node">
+    <div className={`text-node ${selected ? "active" : ""}`}>
       <div className="node-header">
         <h5>
           Send Message <FontAwesomeIcon icon={faWhatsapp} size="sm" />
